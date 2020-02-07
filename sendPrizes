@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+echo "Are you sure you want to do this?  Type 'yes' to continue: ";
+$handle = fopen ("php://stdin","r");
+$line = fgets($handle);
+if(trim($line) != 'yes'){
+    // ЕСЛИ НЕТ
+    echo "ABORTING!\n";
+    exit;
+}
+require_once('Classes/DB.php');
+$query = mysqli_query(DB::getDB(), "SELECT `winners`.`winner_id`, `winners`.`id_user`, `winners`.`amount`, `users`.`id`, `users`.`user_firstname`, `users`.`user_lastname`, `users`.`user_card`  FROM `winners` INNER JOIN  `users` ON `winners`.`id_user` = `users`.`id`  WHERE (`winners`.`type_prize` = 'money' AND `winners`.`sent` = 0 ) ");
+$data_sent = $query->fetch_assoc();
+echo "\n";
+echo "Thank you, continuing...\n";
